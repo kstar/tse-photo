@@ -9,16 +9,21 @@ import sys
 import math
 from enum import Enum
 
-DATE = (2024, 3, 30) # FIXME FIXME FIXME: Change to eclipse date otherwise nothing will happen # FIXME: Expects eclipse to happen on a single UTC date
+DATE = (2024, 4, 8)
 
-DEFINE_TIMINGS_UTC = [
-    (1, 47, 0), # First contact (H, M, S)
-    (1, 52, 0), # Second contact (H, M, S)
-    (1, 55, 0), # Third contact (H, M, S)
-    (2, 1, 0), # Fourth contact (H, M, S)
-]
+DATE = (2024, 3, 30) # FIXME: TESTING ONLY, comment out!!!
 
-DIAMOND_RING = 25  # Go into diamond ring mode at C2/C3 ± these many seconds
+class Timings:
+    Custom = [
+        (5, 3, 0), # First contact (H, M, S)
+        (5, 15, 0), # Second contact (H, M, S)
+        (5, 18, 0), # Third contact (H, M, S)
+        (5, 25, 0), # Fourth contact (H, M, S)
+    ]
+
+DEFINE_TIMINGS_UTC = Timings.Custom
+
+DIAMOND_RING = 30 # Go into diamond ring mode at C2/C3 ± these many seconds
 BAILEYS_BEADS = 10 # Go into Bailey's beads mode at C2/C3 ± these many seconds
 TARGET_DIR='Eclipse'
 
@@ -60,13 +65,13 @@ class Phases:
 
     class Diamond(Settings):
         name='DiamondRing'
-        aperture = "11" # f/11
-        bracketing = Bracketing.EV_1_1_3 # ±1⅓
-        speed = "1/4000"
+        bracketing = Bracketing.EV_1 # ±1
+        speed = "1/1000"
+        aperture = ["8", "16"]
 
     class Baileys(Settings):
         name='Baileys'
-        aperture = "16"
+        aperture = ["16", "8"]
         bracketing = Bracketing.EV_1_2_3 # ±1⅔
         speed = "1/3200"
 
@@ -155,6 +160,9 @@ def main():
         time.sleep(10)
         return
 
+    dr_index = 0
+    bb_index = 0
+
     pbar_c1 = None
     pbar_c2 = None
     pbar_c3 = None
@@ -228,7 +236,8 @@ def main():
                     say('Camera entering diamond ring phase. Ensure filter is off!')
                     phase = Phases.Diamond
                     set_bracketing(phase.bracketing)
-                click(phase.aperture, phase.speed, phase.iso, phase=phase)
+                click(phase.aperture[dr_index%2], phase.speed, phase.iso, phase=phase)
+                dr_index += 1
 
             while (now() > C2_BB and now() <= C2_BB2) or (now() >= C3_BB2 and now() < C3_BB):
                 time.sleep(0.05)
@@ -236,7 +245,8 @@ def main():
                     say('Camera entering Bailey phase. Ensure filter is off!')
                     phase = Phases.Baileys
                     set_bracketing(phase.bracketing)
-                click(phase.aperture, phase.speed, phase.iso, phase=phase)
+                click(phase.aperture[bb_index%2], phase.speed, phase.iso, phase=phase)
+                bb_index += 1
 
             while (now() > C2_BB2 and now() < C3_BB2):
                 try:
