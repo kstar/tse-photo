@@ -16,3 +16,8 @@ A few trade-offs I made:
 
 Please [mailto:akarsh@kde.org](let me know) if you found this script useful on the field, and provide any tweaks necessary to get it to work.
 
+## Dependencies
+I'm trying to list everything I can think of, there may be missing stuff. Please test in your environment.
+
+* System dependencies: `gphoto2`, `festival`, `Python >= 3.10`
+* Python dependencies: `tqdm`
