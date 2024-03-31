@@ -156,20 +156,33 @@ class Phases:
         # From my 2017 experience EV = -1.26 captured the corona to about 2 solar radii. Fred Espenak recommeds 0 for the same.
         # EV = 2.6 shows some earthshine hints, so should be covered with EV = 4.3
         aperture, speed, iso = zip(
-            ("11", "1/6400", 200), # Backup Bracket  [EV: -9.9]
-            ("11", "1/3200", 200), # Chromosphere    [EV: -10.9]
-            ("11", "1/1600", 200), # Prominences     [EV: -9.9]
-            ("10", "1/500", 200),  # Lower Corona    [EV: -8.0]
-            ("10", "1/60", 200),   # Inner Corona    [EV: -4.9]
-            ("8",  "1/25", 400),   # Middle Corona   [EV: -2.0]
-            ("6.3", "1/10", 400),  # Outer Corona    [EV: 0.0]
-            ("6.3", "0.5", 400), # Far Outer Corona  [EV: 2.3]
-            ("6.3", "1", 400),   # Earthshine        [EV: 3.3]
-            ("6.3", "4", 200),   # Earthshine        [EV: 4.3]
+            ("11", "1/6400", 200), # Backup Bracket    [EV: -11.9]
+            ("11", "1/3200", 200), # Chromosphere      [EV: -10.9]
+            ("11", "1/1600", 200), # Prominences       [EV: -9.9]
+            ("10", "1/500", 200),  # Lower Corona      [EV: -8.0]
+            ("10", "1/60", 200),   # Inner Corona      [EV: -4.9]
+            ("8",  "1/25", 400),   # Middle Corona     [EV: -2.0]
+            ("6.3", "1/10", 400),  # Outer Corona      [EV: 0.0]
+            ("6.3", "0.5", 400),   # Far Outer Corona  [EV: 2.3]
+            ("6.3", "1", 400),     # Earthshine        [EV: 3.3]
+            ("6.3", "4", 200),     # Earthshine        [EV: 4.3]
         )
 
 
 def click_(aperture: str, speed: str, iso: int, phase: Phases):
+    """
+    Note: I found that there are issues of the camera going into busy mode and having PTP transactions fail in trying to do anything else, such as:
+        1. Using --trigger-capture to rapidly shoot burst frames
+        2. Storing files on CF card memory
+
+    This is slow and does not get the best coverage possible for diamond ring
+    and Bailey's Beads, but it is better than the script failing due to some
+    PTP error and not taking any pictures at all. With these settings, my Canon
+    50D manages about 15 frames (i.e. 5 stacks) during the 20 seconds assigned
+    to Diamond Ring at each contact, and 15 frames (i.e. 5 stacks) during the
+    20 seconds assigned to Bailey's Beads at each contact.
+
+    """
     filename = os.path.join(TARGET_DIR, f'{phase.name}_t{int(time.time())}_%n')
     bracketing = phase.bracketing
     try:
