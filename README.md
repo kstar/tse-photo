@@ -3,7 +3,7 @@
 A few quick notes:
 * Use at your own risk, I cannot warrant anything -- that the script will actually work, or produce appropriate exposures, or prevent your camera sensor or lenses from burning up in smoke.
 * Script has never been field-tested, just a few short dry runs with artificial timings on my specific camera (a Canon EOS 50D)
-* It is not advisable to look at the partial phase, diamond ring, Baily's Beads, or [anything other than totality](https://www.covingtoninnovations.com/michael/blog/1708/170819-AAS-Chou-Solar-Eclipse-Eye-Safety.pdf) without a filter.
+* It is not advisable to look at the partial phase, diamond ring, Baily's Beads, or [anything other than totality](https://www.covingtoninnovations.com/michael/blog/1708/170819-AAS-Chou-Solar-Eclipse-Eye-Safety.pdf) without a filter. I am not responsible for your eyesight!
 * The script is dirty. I do not want to refactor it since testing it is not easy.
 * The script requires `gphoto2` and `festival` speech-synthesis engine invokable on the command-line
 * Check the script works in your environment with your camera before using it on the field
